@@ -1,0 +1,20 @@
+﻿<Window x:Class="PomodoroTimer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PomodoroTimer"
+        mc:Ignorable="d"
+        Title="Pomodoro Timer" Height="240" Width="280">
+    <Grid>
+        <StackPanel>
+            <Button x:Name="pomodoroBtn" Content="Pomodoro" Click="PomodoroBtn_OnClick"/>
+            <Button x:Name="shortBreakBtn" Content="Short Break" Click="ShortBreakBtn_OnClick"/>
+            <Button x:Name="longBreakBtn" Content="Long Break" Click="LongBreakBtn_OnClick"/>
+            <Label x:Name="timerLbl" Content="00:25:00" FontSize="32" HorizontalAlignment="Center"/>
+            <Button x:Name="startBtn" Content="Start" Click="StartBtn_OnClick"/>
+            <Button x:Name="stopBtn" Content="Stop" Click="StopBtn_OnClick"/>
+            <Button x:Name="resetBtn" Content="Reset Timer" Click="ResetBtn_OnClick"/>
+        </StackPanel>
+    </Grid>
+</Window>
