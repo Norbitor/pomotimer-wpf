@@ -11,7 +11,7 @@
             <Button x:Name="pomodoroBtn" Content="Pomodoro" Click="PomodoroBtn_OnClick"/>
             <Button x:Name="shortBreakBtn" Content="Short Break" Click="ShortBreakBtn_OnClick"/>
             <Button x:Name="longBreakBtn" Content="Long Break" Click="LongBreakBtn_OnClick"/>
-            <Label x:Name="timerLbl" Content="00:25:00" FontSize="32" HorizontalAlignment="Center"/>
+            <Label x:Name="timerLbl" Content="Time left" FontSize="32" HorizontalAlignment="Center"/>
             <Button x:Name="startBtn" Content="Start" Click="StartBtn_OnClick"/>
             <Button x:Name="stopBtn" Content="Stop" Click="StopBtn_OnClick"/>
             <Button x:Name="resetBtn" Content="Reset Timer" Click="ResetBtn_OnClick"/>

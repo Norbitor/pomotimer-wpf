@@ -24,30 +24,18 @@ namespace PomodoroTimer
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly DispatcherTimer _timer;
-        private TimeSpan _timeLeft;
-        private TimeSpan _lastSetTime;
+        private Timer _timer;
+
         public MainWindow()
         {
             InitializeComponent();
-            _timer = new DispatcherTimer {Interval = new TimeSpan(0, 0, 0, 1)};
-            _timer.Tick += TimerOnTick;
-            SetTimeLeft("00:25:00");
+            _timer = new Timer();
+            _timer.TimeLeftChange += TimerOnTimeLeftChange;
         }
 
-        private void TimerOnTick(object sender, EventArgs eventArgs)
+        private void TimerOnTimeLeftChange(object sender, TickEventArgs eventArgs)
         {
-            _timeLeft -= TimeSpan.FromSeconds(1.0);
-            timerLbl.Content = _timeLeft.ToString(@"mm\:ss");
-            if (_timeLeft == TimeSpan.Zero)
-            {
-                _timer.Stop();
-                timerLbl.Content = "Time's Up!";
-
-                Stream snd = Properties.Resources.alarm;
-                SoundPlayer simpleSound = new SoundPlayer(snd);
-                simpleSound.Play();
-            }
+            timerLbl.Content = eventArgs.TimesUp ? "Time's Up" : eventArgs.TimeLeft.ToString(@"mm\:ss");
         }
 
         private void StartBtn_OnClick(object sender, RoutedEventArgs e)
@@ -62,30 +50,22 @@ namespace PomodoroTimer
 
         private void PomodoroBtn_OnClick(object sender, RoutedEventArgs e)
         {
-            SetTimeLeft("00:25:00", true);
+            _timer.SetTimeLeft("00:25", true);
         }
 
         private void ShortBreakBtn_OnClick(object sender, RoutedEventArgs e)
         {
-            SetTimeLeft("00:05:00", true);
+            _timer.SetTimeLeft("00:00:05", true);
         }
 
         private void LongBreakBtn_OnClick(object sender, RoutedEventArgs e)
         {
-            SetTimeLeft("00:10:00", true);
+            _timer.SetTimeLeft("00:10", true);
         }
 
         private void ResetBtn_OnClick(object sender, RoutedEventArgs e)
         {
-            SetTimeLeft(_lastSetTime.ToString());
-        }
-
-        private void SetTimeLeft(string period, bool start = false)
-        {
-            _timer.Stop();
-            _lastSetTime = _timeLeft = TimeSpan.Parse(period);
-            timerLbl.Content = _timeLeft.ToString(@"mm\:ss");
-            if (start) _timer.Start();
+            _timer.Reset();
         }
     }
 }
