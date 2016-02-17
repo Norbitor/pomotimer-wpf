@@ -55,7 +55,7 @@ namespace PomodoroTimer
 
         private void ShortBreakBtn_OnClick(object sender, RoutedEventArgs e)
         {
-            _timer.SetTimeLeft("00:00:05", true);
+            _timer.SetTimeLeft("00:05", true);
         }
 
         private void LongBreakBtn_OnClick(object sender, RoutedEventArgs e)

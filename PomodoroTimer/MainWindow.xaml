@@ -5,16 +5,28 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PomodoroTimer"
         mc:Ignorable="d"
-        Title="Pomodoro Timer" Height="240" Width="280">
-    <Grid>
-        <StackPanel>
-            <Button x:Name="pomodoroBtn" Content="Pomodoro" Click="PomodoroBtn_OnClick"/>
-            <Button x:Name="shortBreakBtn" Content="Short Break" Click="ShortBreakBtn_OnClick"/>
-            <Button x:Name="longBreakBtn" Content="Long Break" Click="LongBreakBtn_OnClick"/>
-            <Label x:Name="timerLbl" Content="Time left" FontSize="32" HorizontalAlignment="Center"/>
-            <Button x:Name="startBtn" Content="Start" Click="StartBtn_OnClick"/>
-            <Button x:Name="stopBtn" Content="Stop" Click="StopBtn_OnClick"/>
-            <Button x:Name="resetBtn" Content="Reset Timer" Click="ResetBtn_OnClick"/>
-        </StackPanel>
-    </Grid>
+        Title="Pomodoro Timer" Height="150" Width="280">
+    <StackPanel Margin="0,10">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="pomodoroBtn" Content="Pomodoro" Click="PomodoroBtn_OnClick" Grid.Column="0" Margin="5,0"/>
+            <Button x:Name="shortBreakBtn" Content="Short Break" Click="ShortBreakBtn_OnClick" Grid.Column="1" Margin="5,0"/>
+            <Button x:Name="longBreakBtn" Content="Long Break" Click="LongBreakBtn_OnClick" Grid.Column="2" Margin="5,0"/>
+        </Grid>
+        <Label x:Name="timerLbl" Content="Time left" FontSize="32" HorizontalAlignment="Center"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="startBtn" Content="Start" Click="StartBtn_OnClick" Grid.Column="0" Margin="5,0"/>
+            <Button x:Name="stopBtn" Content="Stop" Click="StopBtn_OnClick" Grid.Column="1" Margin="5,0"/>
+            <Button x:Name="resetBtn" Content="Reset Timer" Click="ResetBtn_OnClick" Grid.Column="2" Margin="5,0"/>
+        </Grid>
+    </StackPanel>
 </Window>
