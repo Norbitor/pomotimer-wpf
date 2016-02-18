@@ -76,5 +76,10 @@ namespace PomodoroTimer
             _timeLeft = _lastSetTime;
             OnTimeLeftChange(new TickEventArgs(_timeLeft, false));
         }
+
+        public bool IsRunning()
+        {
+            return _timer.IsEnabled;
+        }
     }
 }
