@@ -36,7 +36,16 @@ namespace PomodoroTimer
 
         private void TimerOnTimeLeftChange(object sender, TickEventArgs eventArgs)
         {
-            TimerLbl.Content = eventArgs.TimesUp ? "Time's Up" : eventArgs.TimeLeft.ToString(@"mm\:ss");
+            if (eventArgs.TimesUp)
+            {
+                TimerLbl.Content = "Time's Up";
+                SetStartStopBtnAsStart();
+            }
+            else
+            {
+                TimerLbl.Content = eventArgs.TimeLeft.ToString(@"mm\:ss");
+            }
+            
         }
 
         private void PomodoroBtn_OnClick(object sender, RoutedEventArgs e)
