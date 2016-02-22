@@ -97,5 +97,12 @@ namespace PomodoroTimer
             StartStopBtn.Content = "Stop";
             StartStopBtn.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0xED, 0xB5, 0xAE));
         }
+
+        private void AboutBtn_OnClick(object sender, RoutedEventArgs e)
+        {
+            AboutWindow about = new AboutWindow();
+            about.Owner = this;
+            about.ShowDialog();
+        }
     }
 }

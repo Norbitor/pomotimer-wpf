@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PomodoroTimer"
         mc:Ignorable="d"
-        Title="Pomodoro Timer" Height="180" Width="280" ResizeMode="CanMinimize">
+        Title="Pomodoro Timer" Height="180" Width="280" ResizeMode="CanMinimize" Icon="pack://application:,,,/Resources/tomato.ico" >
     <StackPanel Margin="0,10">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -25,12 +25,16 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="0.5*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="32"/>
             </Grid.RowDefinitions>
             <Button x:Name="StartStopBtn" Content="Start" Click="StartStopBtn_OnClick" Grid.Column="0" Margin="5,0" FontWeight="Bold" Background="#FFBCE27F"/>
             <Button x:Name="ResetBtn" Content="Reset" Click="ResetBtn_OnClick" Grid.Column="1" Margin="5,0"/>
+            <Button x:Name="AboutBtn" Click="AboutBtn_OnClick" Grid.Column="2" Margin="5,0">
+                <Image Source="pack://application:,,,/Resources/information-button.png" />
+            </Button>
         </Grid>
     </StackPanel>
 </Window>
