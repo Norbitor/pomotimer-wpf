@@ -11,75 +11,59 @@ namespace PomodoroTimer
 {
     public delegate void TickEventHandler(object sender, TickEventArgs e);
     /// <summary>
-    /// Countdown timer logic with 1s resolution.
+    /// Abstract Timer logic with 1s resolution.
     /// </summary>
-    class Timer
+    abstract class Timer
     {
-        private readonly DispatcherTimer _timer;
-        private TimeSpan _timeLeft;
-        private TimeSpan _lastSetTime;
-        private SoundPlayer _sound;
+        protected readonly DispatcherTimer Tim;
+        protected TimeSpan CurrentTime;
+        protected TimeSpan LastSetTime;
 
-        public event TickEventHandler TimeLeftChange;
+        public event TickEventHandler TimeChanged;
 
-        public Timer()
+        protected Timer()
         {
-            _timer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 1) };
-            _timer.Tick += TimerOnTick;
-            SetTimeLeft("00:25");
-
-            Stream snd = Properties.Resources.alarm;
-            _sound = new SoundPlayer(snd);
+            Tim = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 1) };
+            Tim.Tick += TimerOnTick;
         }
 
-        protected virtual void OnTimeLeftChange(TickEventArgs e)
+        protected virtual void OnTimeChange(TickEventArgs e)
         {
-            TimeLeftChange?.Invoke(this, e); // Inform about event if we have listeners
+            TimeChanged?.Invoke(this, e); // Inform about event if we have listeners
         }
 
-        private void TimerOnTick(object sender, EventArgs eventArgs)
-        {
-            _timeLeft -= TimeSpan.FromSeconds(1.0);
-            if (_timeLeft == TimeSpan.Zero)
-            {
-                _timer.Stop();
-                _sound.Play();
-                OnTimeLeftChange(new TickEventArgs(_timeLeft, true));
-            }
-            else
-                OnTimeLeftChange(new TickEventArgs(_timeLeft, false));
-        }
-
-        public void SetTimeLeft(string period, bool start = false)
-        {
-            _timer.Stop();
-            _lastSetTime = _timeLeft = TimeSpan.Parse(period);
-            OnTimeLeftChange(new TickEventArgs(_timeLeft, false));
-            if (start) _timer.Start();
-        }
+        protected abstract void TimerOnTick(object sender, EventArgs eventArgs);
 
         public void Start()
         {
-            if(_timeLeft <= TimeSpan.Zero)
+            if(CurrentTime <= TimeSpan.Zero) // Prevents of operating on negative time
                 Reset();
-            _timer.Start();
+            Tim.Start();
         }
 
         public void Stop()
         {
-            _timer.Stop();
+            Tim.Stop();
         }
 
         public void Reset()
         {
-            _timer.Stop();
-            _timeLeft = _lastSetTime;
-            OnTimeLeftChange(new TickEventArgs(_timeLeft, false));
+            Tim.Stop();
+            CurrentTime = LastSetTime;
+            OnTimeChange(new TickEventArgs(CurrentTime, false));
         }
 
         public bool IsRunning()
         {
-            return _timer.IsEnabled;
+            return Tim.IsEnabled;
+        }
+
+        public void SetTimeLeft(string period, bool start = false)
+        {
+            Tim.Stop();
+            LastSetTime = CurrentTime = TimeSpan.Parse(period);
+            OnTimeChange(new TickEventArgs(CurrentTime, false));
+            if (start) Tim.Start();
         }
     }
 }

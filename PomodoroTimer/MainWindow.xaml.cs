@@ -24,17 +24,27 @@ namespace PomodoroTimer
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Timer _timer;
+        private CountdownTimer _stageTimer;
+        private CountupTimer _pauseTimer;
 
         public MainWindow()
         {
             InitializeComponent();
-            _timer = new Timer();
-            _timer.TimeLeftChange += TimerOnTimeLeftChange;
-            _timer.Reset();
+            _stageTimer = new CountdownTimer();
+            _stageTimer.TimeChanged += StageTimerOnTimeChanged;
+            _stageTimer.Reset();
+
+            _pauseTimer = new CountupTimer();
+            _pauseTimer.TimeChanged += PauseTimerOnTimeChanged;
+            _pauseTimer.Reset();
         }
 
-        private void TimerOnTimeLeftChange(object sender, TickEventArgs eventArgs)
+        private void PauseTimerOnTimeChanged(object sender, TickEventArgs tickEventArgs)
+        {
+            PauseTimerLbl.Content = tickEventArgs.TimeLeft.ToString(@"mm\:ss");
+        }
+
+        private void StageTimerOnTimeChanged(object sender, TickEventArgs eventArgs)
         {
             if (eventArgs.TimesUp)
             {
@@ -50,38 +60,44 @@ namespace PomodoroTimer
 
         private void PomodoroBtn_OnClick(object sender, RoutedEventArgs e)
         {
-            _timer.SetTimeLeft("00:25", true);
+            _stageTimer.SetTimeLeft("00:25", true);
+            _pauseTimer.Reset();
             SetStartStopBtnAsStop();
         }
 
         private void ShortBreakBtn_OnClick(object sender, RoutedEventArgs e)
         {
-            _timer.SetTimeLeft("00:05", true);
+            _stageTimer.SetTimeLeft("00:05", true);
+            _pauseTimer.Reset();
             SetStartStopBtnAsStop();
         }
 
         private void LongBreakBtn_OnClick(object sender, RoutedEventArgs e)
         {
-            _timer.SetTimeLeft("00:10", true);
+            _stageTimer.SetTimeLeft("00:10", true);
+            _pauseTimer.Reset();
             SetStartStopBtnAsStop();
         }
 
         private void ResetBtn_OnClick(object sender, RoutedEventArgs e)
         {
-            _timer.Reset();
+            _stageTimer.Reset();
+            _pauseTimer.Reset();
             SetStartStopBtnAsStart();
         }
 
         private void StartStopBtn_OnClick(object sender, RoutedEventArgs e)
         {
-            if (_timer.IsRunning())
+            if (_stageTimer.IsRunning())
             {
-                _timer.Stop();
+                _stageTimer.Stop();
+                _pauseTimer.Start();
                 SetStartStopBtnAsStart();
             }
             else
             {
-                _timer.Start();
+                _stageTimer.Start();
+                _pauseTimer.Stop();
                 SetStartStopBtnAsStop();
             }
         }
@@ -100,8 +116,7 @@ namespace PomodoroTimer
 
         private void AboutBtn_OnClick(object sender, RoutedEventArgs e)
         {
-            AboutWindow about = new AboutWindow();
-            about.Owner = this;
+            AboutWindow about = new AboutWindow {Owner = this};
             about.ShowDialog();
         }
     }

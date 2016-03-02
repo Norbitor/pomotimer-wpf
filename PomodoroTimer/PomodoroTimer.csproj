@@ -77,6 +77,8 @@
     <Compile Include="AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CountdownTimer.cs" />
+    <Compile Include="CountupTimer.cs" />
     <Compile Include="TickEventArgs.cs" />
     <Compile Include="Timer.cs" />
     <Page Include="AboutWindow.xaml">
