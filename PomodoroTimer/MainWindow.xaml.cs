@@ -24,8 +24,17 @@ namespace PomodoroTimer
     /// </summary>
     public partial class MainWindow : Window
     {
+        private enum Stages
+        {
+            Pomodoro, ShortBreak, LongBreak
+        }
+
+        private Dictionary<Stages, string> _stagesValues;
+         
         private CountdownTimer _stageTimer;
         private CountupTimer _pauseTimer;
+
+        private Stages _currentStage = Stages.Pomodoro;
 
         public MainWindow()
         {
@@ -37,6 +46,13 @@ namespace PomodoroTimer
             _pauseTimer = new CountupTimer();
             _pauseTimer.TimeChanged += PauseTimerOnTimeChanged;
             _pauseTimer.Reset();
+
+            _stagesValues = new Dictionary<Stages, string>
+            {
+                {Stages.Pomodoro, "00:25"},
+                {Stages.ShortBreak, "00:05"},
+                {Stages.LongBreak, "00:10"}
+            };
         }
 
         private void PauseTimerOnTimeChanged(object sender, TickEventArgs tickEventArgs)
@@ -44,37 +60,37 @@ namespace PomodoroTimer
             PauseTimerLbl.Content = tickEventArgs.TimeLeft.ToString(@"mm\:ss");
         }
 
-        private void StageTimerOnTimeChanged(object sender, TickEventArgs eventArgs)
+        private void StageTimerOnTimeChanged(object sender, TickEventArgs tickEventArgs)
         {
-            if (eventArgs.TimesUp)
+            if (tickEventArgs.TimesUp)
             {
                 TimerLbl.Content = "Time's Up";
                 SetStartStopBtnAsStart();
             }
             else
-            {
-                TimerLbl.Content = eventArgs.TimeLeft.ToString(@"mm\:ss");
-            }
-            
+                TimerLbl.Content = tickEventArgs.TimeLeft.ToString(@"mm\:ss");
         }
 
         private void PomodoroBtn_OnClick(object sender, RoutedEventArgs e)
         {
-            _stageTimer.SetTimeLeft("00:25", true);
-            _pauseTimer.Reset();
-            SetStartStopBtnAsStop();
+            SetTimer(Stages.Pomodoro);
         }
 
         private void ShortBreakBtn_OnClick(object sender, RoutedEventArgs e)
         {
-            _stageTimer.SetTimeLeft("00:05", true);
-            _pauseTimer.Reset();
-            SetStartStopBtnAsStop();
+            SetTimer(Stages.ShortBreak);
         }
 
         private void LongBreakBtn_OnClick(object sender, RoutedEventArgs e)
         {
-            _stageTimer.SetTimeLeft("00:10", true);
+            SetTimer(Stages.LongBreak);
+        }
+
+        private void SetTimer(Stages stage)
+        {
+            _currentStage = stage;
+            PauseTimerPanel.Visibility = Visibility.Collapsed;
+            _stageTimer.SetTimeLeft(_stagesValues[stage], true);
             _pauseTimer.Reset();
             SetStartStopBtnAsStop();
         }
@@ -83,6 +99,7 @@ namespace PomodoroTimer
         {
             _stageTimer.Reset();
             _pauseTimer.Reset();
+            PauseTimerPanel.Visibility = Visibility.Collapsed;
             SetStartStopBtnAsStart();
         }
 
@@ -91,26 +108,31 @@ namespace PomodoroTimer
             if (_stageTimer.IsRunning())
             {
                 _stageTimer.Stop();
-                _pauseTimer.Start();
+                if (_currentStage == Stages.Pomodoro)
+                {
+                    _pauseTimer.Start();
+                    PauseTimerPanel.Visibility = Visibility.Visible;
+                }
                 SetStartStopBtnAsStart();
             }
             else
             {
                 _stageTimer.Start();
-                _pauseTimer.Stop();
+                if (_currentStage == Stages.Pomodoro)
+                    _pauseTimer.Stop();
                 SetStartStopBtnAsStop();
             }
         }
 
         private void SetStartStopBtnAsStart()
         {
-            StartStopBtn.Content = "Start";
+            StartStopBtn.Content = "S_tart";
             StartStopBtn.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0xBC, 0xE2, 0x7F));
         }
 
         private void SetStartStopBtnAsStop()
         {
-            StartStopBtn.Content = "Stop";
+            StartStopBtn.Content = "S_top";
             StartStopBtn.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0xED, 0xB5, 0xAE));
         }
 

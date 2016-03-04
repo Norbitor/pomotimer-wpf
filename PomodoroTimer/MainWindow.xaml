@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PomodoroTimer"
         mc:Ignorable="d"
-        Title="Pomodoro Timer" Height="200" Width="280" ResizeMode="CanMinimize" Icon="pack://application:,,,/Resources/tomato.ico" >
+        Title="Pomodoro Timer" SizeToContent="Height" Height="165" Width="280" ResizeMode="CanMinimize" Icon="pack://application:,,,/Resources/tomato.ico" >
     <StackPanel Margin="0,10">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -16,12 +16,12 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="32"/>
             </Grid.RowDefinitions>
-            <Button x:Name="PomodoroBtn" Content="Pomodoro" Click="PomodoroBtn_OnClick" Grid.Column="0" Margin="5,0" Background="#FFEDB5AE"/>
-            <Button x:Name="ShortBreakBtn" Content="Short Break" Click="ShortBreakBtn_OnClick" Grid.Column="1" Margin="5,0" Background="#FFFFFF99"/>
-            <Button x:Name="LongBreakBtn" Content="Long Break" Click="LongBreakBtn_OnClick" Grid.Column="2" Margin="5,0" Background="#FFBCE27F"/>
+            <Button x:Name="PomodoroBtn" Content="_Pomodoro" Click="PomodoroBtn_OnClick" Grid.Column="0" Margin="5,0" Background="#FFEDB5AE"/>
+            <Button x:Name="ShortBreakBtn" Content="_Short Break" Click="ShortBreakBtn_OnClick" Grid.Column="1" Margin="5,0" Background="#FFFFFF99"/>
+            <Button x:Name="LongBreakBtn" Content="_Long Break" Click="LongBreakBtn_OnClick" Grid.Column="2" Margin="5,0" Background="#FFBCE27F"/>
         </Grid>
         <Label x:Name="TimerLbl" Content="time_left" FontSize="32" HorizontalAlignment="Center" Padding="5,5,5,0"/>
-        <DockPanel HorizontalAlignment="Center">
+        <DockPanel x:Name="PauseTimerPanel" HorizontalAlignment="Center" Visibility="Collapsed">
             <Label x:Name="PauseLbl" Content="Pause Time:" FontSize="16" HorizontalAlignment="Right" Padding="5,0,5,5" />
             <Label x:Name="PauseTimerLbl" Content="pause_time" FontSize="16" Padding="5,0,5,5"/>
         </DockPanel>
@@ -34,8 +34,8 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="32"/>
             </Grid.RowDefinitions>
-            <Button x:Name="StartStopBtn" Content="Start" Click="StartStopBtn_OnClick" Grid.Column="0" Margin="5,0" FontWeight="Bold" Background="#FFBCE27F"/>
-            <Button x:Name="ResetBtn" Content="Reset" Click="ResetBtn_OnClick" Grid.Column="1" Margin="5,0"/>
+            <Button x:Name="StartStopBtn" Content="S_tart" Click="StartStopBtn_OnClick" Grid.Column="0" Margin="5,0" FontWeight="Bold" Background="#FFBCE27F"/>
+            <Button x:Name="ResetBtn" Content="_Reset" Click="ResetBtn_OnClick" Grid.Column="1" Margin="5,0"/>
             <Button x:Name="AboutBtn" Click="AboutBtn_OnClick" Grid.Column="2" Margin="5,0">
                 <Image Source="pack://application:,,,/Resources/information-button.png" />
             </Button>
