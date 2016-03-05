@@ -65,10 +65,27 @@ namespace PomodoroTimer
             if (tickEventArgs.TimesUp)
             {
                 TimerLbl.Content = "Time's Up";
+                StatisticsUpdate();
                 SetStartStopBtnAsStart();
             }
             else
                 TimerLbl.Content = tickEventArgs.TimeLeft.ToString(@"mm\:ss");
+        }
+
+        private void StatisticsUpdate()
+        {
+            switch (_currentStage)
+            {
+                case Stages.Pomodoro:
+                    PomodoroCountLbl.Content = (int.Parse((string) PomodoroCountLbl.Content) + 1).ToString();
+                    break;
+                case Stages.LongBreak:
+                    LongBreakCountLbl.Content = (int.Parse((string) LongBreakCountLbl.Content) + 1).ToString();
+                    break;
+                case Stages.ShortBreak:
+                    ShortBreakCountLbl.Content = (int.Parse((string) ShortBreakCountLbl.Content) + 1).ToString();
+                    break;
+            }
         }
 
         private void PomodoroBtn_OnClick(object sender, RoutedEventArgs e)
@@ -111,7 +128,8 @@ namespace PomodoroTimer
                 if (_currentStage == Stages.Pomodoro)
                 {
                     _pauseTimer.Start();
-                    PauseTimerPanel.Visibility = Visibility.Visible;
+                    if(PauseTimerPanel.Visibility != Visibility.Visible)
+                        PauseTimerPanel.Visibility = Visibility.Visible;
                 }
                 SetStartStopBtnAsStart();
             }
@@ -140,6 +158,20 @@ namespace PomodoroTimer
         {
             AboutWindow about = new AboutWindow {Owner = this};
             about.ShowDialog();
+        }
+
+        private void ExpandBtn_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (StatisticGrid.Visibility == Visibility.Collapsed)
+            {
+                StatisticGrid.Visibility = Visibility.Visible;
+                ExpandBtn.Content = "5"; // "Up arrow" in Marlett font
+            }
+            else
+            {
+                StatisticGrid.Visibility = Visibility.Collapsed;
+                ExpandBtn.Content = "6"; // "Down arrow" in Marlett font
+            }
         }
     }
 }
