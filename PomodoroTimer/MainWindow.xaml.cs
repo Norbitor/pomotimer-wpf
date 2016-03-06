@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Shell;
 using System.Windows.Threading;
 
 namespace PomodoroTimer
@@ -39,6 +40,14 @@ namespace PomodoroTimer
         public MainWindow()
         {
             InitializeComponent();
+
+            _stagesValues = new Dictionary<Stages, string>
+            {
+                {Stages.Pomodoro, "00:25"},
+                {Stages.ShortBreak, "00:05"},
+                {Stages.LongBreak, "00:10"}
+            };
+
             _stageTimer = new CountdownTimer();
             _stageTimer.TimeChanged += StageTimerOnTimeChanged;
             _stageTimer.Reset();
@@ -47,12 +56,7 @@ namespace PomodoroTimer
             _pauseTimer.TimeChanged += PauseTimerOnTimeChanged;
             _pauseTimer.Reset();
 
-            _stagesValues = new Dictionary<Stages, string>
-            {
-                {Stages.Pomodoro, "00:25"},
-                {Stages.ShortBreak, "00:05"},
-                {Stages.LongBreak, "00:10"}
-            };
+            
         }
 
         private void PauseTimerOnTimeChanged(object sender, TickEventArgs tickEventArgs)
@@ -67,9 +71,15 @@ namespace PomodoroTimer
                 TimerLbl.Content = "Time's Up";
                 StatisticsUpdate();
                 SetStartStopBtnAsStart();
+                TaskbarItemInfo.ProgressState = TaskbarItemProgressState.None;
             }
             else
+            {
                 TimerLbl.Content = tickEventArgs.TimeLeft.ToString(@"mm\:ss");
+                TimeSpan x = TimeSpan.Parse(_stagesValues[_currentStage]);
+                TaskbarItemInfo.ProgressValue = 1-(tickEventArgs.TimeLeft.TotalSeconds /
+                                                 x.TotalSeconds);
+            }
         }
 
         private void StatisticsUpdate()
@@ -110,6 +120,7 @@ namespace PomodoroTimer
             _stageTimer.SetTimeLeft(_stagesValues[stage], true);
             _pauseTimer.Reset();
             SetStartStopBtnAsStop();
+            TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Normal;
         }
 
         private void ResetBtn_OnClick(object sender, RoutedEventArgs e)
@@ -118,6 +129,7 @@ namespace PomodoroTimer
             _pauseTimer.Reset();
             PauseTimerPanel.Visibility = Visibility.Collapsed;
             SetStartStopBtnAsStart();
+            TaskbarItemInfo.ProgressState = TaskbarItemProgressState.None;
         }
 
         private void StartStopBtn_OnClick(object sender, RoutedEventArgs e)
@@ -132,6 +144,7 @@ namespace PomodoroTimer
                         PauseTimerPanel.Visibility = Visibility.Visible;
                 }
                 SetStartStopBtnAsStart();
+                TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Paused;
             }
             else
             {
@@ -139,6 +152,7 @@ namespace PomodoroTimer
                 if (_currentStage == Stages.Pomodoro)
                     _pauseTimer.Stop();
                 SetStartStopBtnAsStop();
+                TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Normal;
             }
         }
 

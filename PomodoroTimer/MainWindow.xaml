@@ -61,4 +61,7 @@
             <Label x:Name="LongBreakCountLbl" Content="0" Grid.Column="1" Grid.Row="3"/>
         </Grid>
     </StackPanel>
+    <Window.TaskbarItemInfo>
+        <TaskbarItemInfo x:Name="TaskbarItemInfo"/>
+    </Window.TaskbarItemInfo>
 </Window>
