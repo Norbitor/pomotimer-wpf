@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace PomodoroTimer
 {
     /// <summary>
-    /// EventArguments for Timer class
+    /// EventArguments for Timer class.
     /// </summary>
     public class TickEventArgs : EventArgs
     {

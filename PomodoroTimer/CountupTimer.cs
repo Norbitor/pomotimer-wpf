@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace PomodoroTimer
 {
+    /// <summary>
+    /// Timer which is counting the past time.
+    /// </summary>
     class CountupTimer : Timer
     {
         public CountupTimer()
